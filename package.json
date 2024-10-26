@@ -1,0 +1,22 @@
+{
+  "name": "riclias-intel-english",
+  "version": "0.0.0",
+  "description": "",
+  "main": "Main.js",
+  "scripts": {
+    "test": "node Main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manmen2414/Riclias-Intel-English.git"
+  },
+  "author": "Manmen2414",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/manmen2414/Riclias-Intel-English/issues"
+  },
+  "homepage": "https://github.com/manmen2414/Riclias-Intel-English#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
