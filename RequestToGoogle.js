@@ -14,7 +14,7 @@ async function main() {
             // アクセストークンを取得する(Promise)
             const accessToken = await getAccessToken().then(function (res) {
                 return res
-            })
+            }).catch(reject)
 
             // GASを実行
             const url = `https://script.googleapis.com/v1/scripts/${SCRIPT_ID}:run`;
@@ -53,28 +53,32 @@ async function main() {
  * @return string
  */
 async function getAccessToken() {
-    return new Promise(function (resolve) {
-        const data = JSON.stringify({
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            refresh_token: REFRESH_TOKEN,
-            grant_type: 'refresh_token',
-        });
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        const reque = https.request("https://oauth2.googleapis.com/token", options, (res) => {
-            // console.log(res)
-            res.on('data', (chunk) => {
-                let access_token = JSON.parse(chunk.toString())
-                resolve(access_token.access_token)
-            })
-        })
-        reque.write(data)
-        reque.end()
+    return new Promise(function (resolve, reject) {
+        try {
+            const data = JSON.stringify({
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                refresh_token: REFRESH_TOKEN,
+                grant_type: 'refresh_token',
+            });
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            const reque = https.request("https://oauth2.googleapis.com/token", options, (res) => {
+                // console.log(res)
+                res.on('data', (chunk) => {
+                    let access_token = JSON.parse(chunk.toString())
+                    resolve(access_token.access_token)
+                })
+            }).on("error", reject)
+            reque.write(data)
+            reque.end()
+        } catch (ex) {
+            reject(ex)
+        }
     })
 }
-return main;
+module.exports = main;
